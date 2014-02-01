@@ -18,16 +18,16 @@ function readJsonFile(path) {
 }
 
 
-describe('#fromSource', function() {
+describe('#forSource', function() {
     var path = 'test/fixtures/source.js';
     var source = readFile(path);
 
     it('should be a function', function() {
-        SourceMap.fromSource.should.be.a('function');
+        SourceMap.forSource.should.be.a('function');
     });
 
     it('should return a source map object of version 3', function() {
-        var map = SourceMap.fromSource(source, path);
+        var map = SourceMap.forSource(source, path);
 
         // Can't do instanceof as the prototype is not exposed
         map.should.be.an('object');
@@ -35,22 +35,22 @@ describe('#fromSource', function() {
     });
 
     it('should return a source map referencing the original filename as file', function() {
-        var map = SourceMap.fromSource(source, path);
+        var map = SourceMap.forSource(source, path);
         map.file.should.equal('source.js');
     });
 
     it('should return a source map referencing the path in sources', function() {
-        var map = SourceMap.fromSource(source, path);
+        var map = SourceMap.forSource(source, path);
         map.sources.should.deep.equal([path]);
     });
 
     it('should return a source map that includes the source contents', function() {
-        var map = SourceMap.fromSource(source, path);
+        var map = SourceMap.forSource(source, path);
         map.sourcesContent.should.deep.equal([source]);
     });
 
     it('should return a source map mapping the file onto itself', function() {
-        var map = SourceMap.fromSource(source, path);
+        var map = SourceMap.forSource(source, path);
         var consumer = new SourceMapConsumer(map);
 
         var numLines = numLines = source.split('\n').length;
@@ -306,6 +306,60 @@ describe('prototype', function() {
         });
     });
 
-    // TODO: append, copy
+
+
+    describe('#append', function() {
+        var sourceJsPath = 'test/fixtures/source.js';
+        var sourceJs = readFile(sourceJsPath);
+        var sourceJsNumLines = sourceJs.split('\n').length;
+
+        var sourcePath = 'test/fixtures/source.js.map';
+        var sourceSourceMapObj = readJsonFile(sourcePath);
+        var sourceSourceMap;
+        var libraryPath = 'test/fixtures/library.js.map';
+        var librarySourceMapObj = readJsonFile(libraryPath);
+        var librarySourceMap;
+
+        beforeEach(function() {
+            sourceSourceMap = SourceMap.fromMapObject(sourceSourceMapObj);
+            librarySourceMap = SourceMap.fromMapObject(librarySourceMapObj);
+        });
+
+        it('should return the same mappings for the first map', function() {
+            var appendedMap = sourceSourceMap.append(librarySourceMap, sourceJsNumLines, 'appended.js');
+            var consumer = new SourceMapConsumer(appendedMap);
+            consumer.originalPositionFor({line: 1, column: 0}).should.deep.equal({
+                source: 'test/fixtures/source.js',
+                line: 1,
+                column: 0,
+                name: null
+            });
+            consumer.originalPositionFor({line: sourceJsNumLines, column: 0}).should.deep.equal({
+                source: 'test/fixtures/source.js',
+                line: sourceJsNumLines,
+                column: 0,
+                name: null
+            });
+        });
+
+        it('should return offsetted mappings for the second map', function() {
+            var appendedMap = sourceSourceMap.append(librarySourceMap, sourceJsNumLines, 'appended.js');
+            var consumer = new SourceMapConsumer(appendedMap);
+            consumer.originalPositionFor({line: sourceJsNumLines + 1, column: 0}).should.deep.equal({
+                source: 'library.js',
+                line: 1,
+                column: 0,
+                name: null
+            });
+            consumer.originalPositionFor({line: sourceJsNumLines + 2, column: 0}).should.deep.equal({
+                source: 'library.js',
+                line: 2,
+                column: 0,
+                name: null
+            });
+        });
+
+    });
+
     // TODO: properties
 });
