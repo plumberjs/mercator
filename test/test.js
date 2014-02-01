@@ -149,6 +149,25 @@ describe('prototype', function() {
         });
     });
 
+    describe('#withFile', function() {
+        var updatedMap;
+
+        beforeEach(function() {
+            updatedMap = sourceMap.withFile('other-name.js');
+        });
+
+        it('should map the source paths', function() {
+            updatedMap.file.should.equal('other-name.js');
+        });
+
+        it('should retain all other fields', function() {
+            ['version', 'mappings', 'sources',
+             'sourcesContent', 'names'].forEach(function(key) {
+                 updatedMap[key].should.deep.equal(sourceMap[key]);
+             });
+        });
+    });
+
 
     describe('#apply', function() {
         var concatPath = 'test/fixtures/concatenated.js.map';
