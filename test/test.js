@@ -388,13 +388,29 @@ describe('SourceMap', function() {
             var librarySourceMapObj = readJsonFile(libraryPath);
             var librarySourceMap;
 
+            var appendedMap;
+
             beforeEach(function() {
                 sourceSourceMap = SourceMap.fromMapObject(sourceSourceMapObj);
                 librarySourceMap = SourceMap.fromMapObject(librarySourceMapObj);
+                appendedMap = sourceSourceMap.append(librarySourceMap, sourceJsNumLines, 'appended.js');
+            });
+
+            it('should return a source map containing all original sources', function() {
+                appendedMap.sources.should.deep.equal([
+                    'test/fixtures/source.js',
+                    'library.js'
+                ]);
+            });
+
+            it('should return a source map containing all original source contents', function() {
+                appendedMap.sourcesContent.should.deep.equal([
+                    sourceSourceMap.sourcesContent[0],
+                    librarySourceMap.sourcesContent[0]
+                ]);
             });
 
             it('should return the same mappings for the first map', function() {
-                var appendedMap = sourceSourceMap.append(librarySourceMap, sourceJsNumLines, 'appended.js');
                 var consumer = new SourceMapConsumer(appendedMap);
                 consumer.originalPositionFor({line: 1, column: 0}).should.deep.equal({
                     source: 'test/fixtures/source.js',
@@ -411,7 +427,6 @@ describe('SourceMap', function() {
             });
 
             it('should return offsetted mappings for the second map', function() {
-                var appendedMap = sourceSourceMap.append(librarySourceMap, sourceJsNumLines, 'appended.js');
                 var consumer = new SourceMapConsumer(appendedMap);
                 consumer.originalPositionFor({line: sourceJsNumLines + 1, column: 0}).should.deep.equal({
                     source: 'library.js',
