@@ -240,7 +240,7 @@ describe('SourceMap', function() {
                  ^
                  */
                 consumer.originalPositionFor({line: 1, column: 0}).should.deep.equal({
-                    source: 'source.js',
+                    source: 'test/fixtures/source.js',
                     line: 6,
                     column: 0,
                     name: null
@@ -250,7 +250,7 @@ describe('SourceMap', function() {
                  ^
                  */
                 consumer.originalPositionFor({line: 1, column: 16}).should.deep.equal({
-                    source: 'source.js',
+                    source: 'test/fixtures/source.js',
                     line: 7,
                     column: 0,
                     name: null
@@ -260,7 +260,7 @@ describe('SourceMap', function() {
                  ^
                  */
                 consumer.originalPositionFor({line: 1, column: 27}).should.deep.equal({
-                    source: 'source.js',
+                    source: 'test/fixtures/source.js',
                     line: 1,
                     column: 0,
                     name: null
@@ -270,7 +270,7 @@ describe('SourceMap', function() {
                  ^
                  */
                 consumer.originalPositionFor({line: 1, column: 31}).should.deep.equal({
-                    source: 'source.js',
+                    source: 'test/fixtures/source.js',
                     line: 1,
                     column: 0,
                     name: 'x'
@@ -280,7 +280,7 @@ describe('SourceMap', function() {
                  ^
                  */
                 consumer.originalPositionFor({line: 1, column: 35}).should.deep.equal({
-                    source: 'source.js',
+                    source: 'test/fixtures/source.js',
                     line: 2,
                     column: 0,
                     name: 'y'
@@ -290,7 +290,7 @@ describe('SourceMap', function() {
                  ^
                  */
                 consumer.originalPositionFor({line: 1, column: 39}).should.deep.equal({
-                    source: 'source.js',
+                    source: 'test/fixtures/source.js',
                     line: 10,
                     column: 0,
                     name: 'z'
@@ -300,7 +300,7 @@ describe('SourceMap', function() {
                  ^
                  */
                 consumer.originalPositionFor({line: 1, column: 48}).should.deep.equal({
-                    source: 'library.js',
+                    source: 'test/fixtures/library.js',
                     line: 2,
                     column: 0,
                     name: 'define'
@@ -310,7 +310,7 @@ describe('SourceMap', function() {
                  ^
                  */
                 consumer.originalPositionFor({line: 1, column: 58}).should.deep.equal({
-                    source: 'library.js',
+                    source: 'test/fixtures/library.js',
                     line: 2,
                     column: 0, // Note: only line info...
                     name: null
@@ -320,7 +320,7 @@ describe('SourceMap', function() {
                  ^
                  */
                 consumer.originalPositionFor({line: 1, column: 69}).should.deep.equal({
-                    source: 'library.js',
+                    source: 'test/fixtures/library.js',
                     line: 5,
                     column: 0,
                     name: null
@@ -330,7 +330,7 @@ describe('SourceMap', function() {
                  ^
                  */
                 consumer.originalPositionFor({line: 1, column: 83}).should.deep.equal({
-                    source: 'library.js',
+                    source: 'test/fixtures/library.js',
                     line: 6,
                     column: 0,
                     name: null
@@ -340,7 +340,7 @@ describe('SourceMap', function() {
                  ^
                  */
                 consumer.originalPositionFor({line: 1, column: 94}).should.deep.equal({
-                    source: 'library.js',
+                    source: 'test/fixtures/library.js',
                     line: 3,
                     column: 0,
                     name: null
@@ -350,7 +350,7 @@ describe('SourceMap', function() {
                  ^
                  */
                 consumer.originalPositionFor({line: 1, column: 98}).should.deep.equal({
-                    source: 'library.js',
+                    source: 'test/fixtures/library.js',
                     line: 3,
                     column: 0,
                     name: 'number'
@@ -360,7 +360,7 @@ describe('SourceMap', function() {
                  ^
                  */
                 consumer.originalPositionFor({line: 1, column: 102}).should.deep.equal({
-                    source: 'library.js',
+                    source: 'test/fixtures/library.js',
                     line: 9,
                     column: 0,
                     name: null
