@@ -34,6 +34,18 @@ describe('SourceMap', function() {
             SourceMap.forSource.should.be.a('function');
         });
 
+        it('should throw an error if called without data', function() {
+            (function() {
+                SourceMap.forSource();
+            }).should.throw('Missing data in SourceMap.forSource');
+        });
+
+        it('should throw an error if called without source path', function() {
+            (function() {
+                SourceMap.forSource(source);
+            }).should.throw('Missing sourcePath in SourceMap.forSource');
+        });
+
         it('should return a source map object of version 3', function() {
             var map = SourceMap.forSource(source, path);
 
@@ -94,7 +106,34 @@ describe('SourceMap', function() {
             map.should.be.an('object');
             ['version', 'file', 'mappings', 'sources',
              'sourcesContent', 'names'].forEach(function(key) {
-                 map[key].should.equal(mapObject[key]);
+                 map[key].should.deep.equal(mapObject[key]);
+             });
+        });
+
+    });
+
+
+    describe('#fromMapData', function() {
+
+        it('should be a function', function() {
+            SourceMap.fromMapData.should.be.a('function');
+        });
+
+        it('should return a source map object identical to the input', function() {
+            var mapObject = {
+                version: 3,
+                file: 'source.js',
+                mappings: 'AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA',
+                sources: [ 'test/fixtures/source.js' ],
+                sourcesContent: [ 'var x = 3;\nvar y = x;\n\n/* a comment */\n\nfunction inc(x) {\n    return x + 1;\n}\n\nvar z = inc(x);\n\n' ],
+                names: ['x']
+            };
+            var map = SourceMap.fromMapData(JSON.stringify(mapObject));
+
+            map.should.be.an('object');
+            ['version', 'file', 'mappings', 'sources',
+             'sourcesContent', 'names'].forEach(function(key) {
+                 map[key].should.deep.equal(mapObject[key]);
              });
         });
 
