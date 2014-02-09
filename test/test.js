@@ -550,6 +550,33 @@ describe('stripSourceMappingComment', function() {
 });
 
 
+
+describe('readSourceMappingComment', function() {
+    var readSourceMappingComment = mercator.readSourceMappingComment;
+
+    it('should return undefined when no source mapping comment', function() {
+        var source = 'var x = 3;\nvar yz = 2;\n';
+        should.not.exist(readSourceMappingComment(source));
+    });
+
+    it('should return undefined when source mapping comment not at the end of the content', function() {
+        var source = 'var x = 3;\n//# sourceMappingURL=some-file.js\nvar yz = 2;\n';
+        should.not.exist(readSourceMappingComment(source));
+    });
+
+    it('should return the source map path when source mapping comment at the end of JS content', function() {
+        var source = 'var x = 3;\n\nvar yz = 2;\n//# sourceMappingURL=some-file.js \n\n';
+        readSourceMappingComment(source).should.equal('some-file.js');
+    });
+
+    it('should return the source map path when source mapping comment at the end of CSS content', function() {
+        var source = '.rule { border: 0 }\n/*# sourceMappingURL=concatenated.less.map */\n';
+        readSourceMappingComment(source).should.equal('concatenated.less.map');
+    });
+
+});
+
+
 describe('generateJsSourceMappingComment', function() {
     var generateJsSourceMappingComment = mercator.generateJsSourceMappingComment;
 
