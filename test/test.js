@@ -218,6 +218,65 @@ describe('SourceMap', function() {
         });
 
 
+        describe('#withSourceContent', function() {
+
+            describe('when source content not already present', function() {
+                var updatedMap;
+
+                beforeEach(function() {
+                    var sourceMapNoContent = sourceMap.copy({sourcesContent: null});
+
+                    updatedMap = sourceMap.withSourceContent("test/fixtures/source.js", 'var a = 2;');
+                });
+
+                it('should return a new source map with updated source content', function() {
+                    updatedMap.sourcesContent.should.deep.equal(
+                        ['var a = 2;']
+                    );
+                });
+
+                it('should keep all other fields', function() {
+                    ['file', 'version', 'mappings',
+                     'sources', 'names'].forEach(function(key) {
+                         updatedMap[key].should.deep.equal(sourceMap[key]);
+                     });
+                });
+            });
+
+            describe('when source content already present', function() {
+                var updatedMap;
+
+                beforeEach(function() {
+                    updatedMap = sourceMap.withSourceContent("test/fixtures/source.js", 'var a = 2;');
+                });
+
+                it('should update the source content', function() {
+                    updatedMap.sourcesContent.should.deep.equal(
+                        ['var a = 2;']
+                    );
+                });
+
+                it('should keep all other fields', function() {
+                    ['file', 'version', 'mappings',
+                     'sources', 'names'].forEach(function(key) {
+                         updatedMap[key].should.deep.equal(sourceMap[key]);
+                     });
+                });
+
+            });
+
+            describe('when content for source not in the list', function() {
+                it('should throw an error', function() {
+                    (function() {
+                        sourceMap.withSourceContent("path/to/no-such-file.js", 'var a = 2;');
+                    }).should.throw("path/to/no-such-file.js not found in sources of source map");
+                });
+
+            });
+
+        });
+
+
         describe('#apply', function() {
             var concatPath = 'test/fixtures/concatenated.js.map';
             var concatSourceMapObj = readJsonFile(concatPath);
