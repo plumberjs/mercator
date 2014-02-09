@@ -1,5 +1,5 @@
 var chai = require('chai');
-chai.should();
+var should = chai.should();
 
 var fs = require('fs');
 
@@ -274,6 +274,26 @@ describe('SourceMap', function() {
 
             });
 
+        });
+
+
+        describe('#withoutSourceContent', function() {
+            var updatedMap;
+
+            beforeEach(function() {
+                updatedMap = sourceMap.withoutSourcesContent();
+            });
+
+            it('should return a new source map with no source content', function() {
+                should.not.exist(updatedMap.sourcesContent);
+            });
+
+            it('should keep all other fields', function() {
+                ['file', 'version', 'mappings',
+                 'sources', 'names'].forEach(function(key) {
+                     updatedMap[key].should.deep.equal(sourceMap[key]);
+                 });
+            });
         });
 
 
