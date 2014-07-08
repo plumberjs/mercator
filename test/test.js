@@ -564,6 +564,11 @@ describe('readSourceMappingComment', function() {
         should.not.exist(readSourceMappingComment(source));
     });
 
+    it('should return undefined when source mapping comment at the end of the content but not on a new line', function() {
+        var source = 'var x = 3;\nvar yz = 2;//# sourceMappingURL=some-file.js';
+        should.not.exist(readSourceMappingComment(source));
+    });
+
     it('should return the source map path when source mapping comment at the end of JS content', function() {
         var source = 'var x = 3;\n\nvar yz = 2;\n//# sourceMappingURL=some-file.js \n\n';
         readSourceMappingComment(source).should.equal('some-file.js');
