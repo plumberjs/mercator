@@ -1,6 +1,6 @@
 {
   "name": "mercator",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "A source map manipulation library",
   "main": "index",
   "directories": {
