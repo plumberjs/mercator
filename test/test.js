@@ -71,17 +71,8 @@ describe('SourceMap', function() {
 
         it('should return a source map mapping the file onto itself', function() {
             var map = SourceMap.forSource(source, path);
-            var consumer = new SourceMapConsumer(map);
-
-            var numLines = numLines = source.split('\n').length;
-            for (var line = 1; line <= numLines; line++) {
-                consumer.originalPositionFor({line: line, column: 0}).should.deep.equal({
-                    source: path,
-                    line: line,
-                    column: 0,
-                    name: null
-                });
-            }
+            // Should map according to javascript tokens.
+            map.mappings.should.equal('AAAA,IAAI,EAAE,EAAE,CAAC;AACT,IAAI,EAAE,EAAE,CAAC;;;;AAIT,SAAS,GAAG,CAAC,CAAC,EAAE;IACZ,OAAO,EAAE,EAAE,CAAC;AAChB;;AAEA,IAAI,EAAE,EAAE,GAAG,CAAC,CAAC,CAAC');
         });
     });
 
