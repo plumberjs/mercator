@@ -7,7 +7,7 @@
     "lib": "./lib"
   },
   "dependencies": {
-    "esprima": "^1.2.2",
+    "esprima": "~1.2.2",
     "source-map": "~0.1.31"
   },
   "devDependencies": {
